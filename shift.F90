@@ -1,4 +1,4 @@
-subroutine shift(density)
+subroutine shift(density,com)
   implicit none
   include "convertpar.h"
 
@@ -9,7 +9,7 @@ subroutine shift(density)
   double precision :: dr, dphi, com_norm, x, y0, x0, r0, phi0, &
                       rho1, rho2, rho3, rho4, x1, x2, x3, x4,  &
                       y1, y2, y3, y4, d1, d2, d3, d4,          &
-                      rhos, rhol, vs, vl, v, test
+                      rhos, rhol, vs, vl, v, test, com
   double precision :: rho5, rho6, rho7, rho8, w1, w2, w3, w4 
   
   
@@ -48,7 +48,7 @@ subroutine shift(density)
          open(unit=10,file="star2i")
          do j=1,numz
            do i=1,numr  
-             write(10,*) i,j,density(i,j,256) 
+             write(10,*) i,j,density(i,j,numphi/2) 
            enddo
            write(10,*)
          enddo
@@ -168,7 +168,7 @@ subroutine shift(density)
   open(unit=12,file="star2o")
          do j=1,numz
            do i=1,numr  
-             write(12,*) i,j,density(i,j,256) 
+             write(12,*) i,j,density(i,j,numphi/2) 
            enddo
            write(12,*)
          enddo

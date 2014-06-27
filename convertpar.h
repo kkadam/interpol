@@ -1,7 +1,9 @@
-       integer, parameter :: scfr = 256
-       integer, parameter :: scfz = 256
-       integer, parameter :: numphi = 512
-       
+!Gridsize of the SCF code (input)
+       integer, parameter :: scfr = 130!256
+       integer, parameter :: scfz = 130!256
+       integer, parameter :: numphi = 256!512
+
+!Gridsize of the hydro code (output)       
        integer, parameter :: numr = 512 !256
        integer, parameter :: numz = 2*scfz-2
        
@@ -14,4 +16,4 @@
        double precision, parameter :: pi = acos(-1.0)
        
        double precision, parameter :: omega = abs(sqrt(0.0336))
-       double precision, parameter :: com = -0.388452020466794 
+!       double precision, parameter :: com = -0.388452020466794 
