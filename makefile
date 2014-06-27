@@ -1,7 +1,7 @@
 #compiler
 FC=/opt/intel/composerxe-2011.5.209/bin/intel64/ifort
 
-F90FILES= main.F90 shift.F90 densityinterpolate.F90
+F90FILES= main.F90 shift.F90 densityinterpolate.F90 com_initial.F90 com_final.F90 fort.F90 outfiles.F90
 
 # driver8.F90
 
