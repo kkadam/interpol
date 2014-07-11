@@ -35,7 +35,6 @@ subroutine shift(density,com)
   enddo
 
 !##### Visualize input ####
-	
   open(unit=10,file="star1i")
          do j=1,numz
            do i=1,numr  
@@ -43,9 +42,10 @@ subroutine shift(density,com)
            enddo
            write(10,*)
          enddo
-  print*, "star1i"
+  print*, "star1i"	
+
          
-         open(unit=10,file="star2i")
+  open(unit=10,file="star2i")
          do j=1,numz
            do i=1,numr  
              write(10,*) i,j,density(i,j,numphi/2) 

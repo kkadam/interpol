@@ -24,30 +24,50 @@ program main
    call com_initial(rhoscf, com)
  
    print*, "com =",com
-  
-!#### Trim ghost zones ####
- 
-    do i=1,scfr-1
-      do j=1,scfz-1
-        do k=1,numphi 
-          rhoscf(i,j,k)=rhoscf(i+1,j+1,k) 
-        enddo
-      enddo
-    enddo
+   
+
   
 !#### Get 3D axisymmetric density ####
 	
   density = 1d-10
+ 
+  if (scfz.lt.numz/2) then
 	
-  do i=1,scfr-1
-    do j=1,scfz-1
-      do k=1,numphi        
-	  density(i,j,k)=rhoscf(i,scfz-j,k)
-  	  density(i,j+numz/2,k)=rhoscf(i,j,k)
+    do i=1,scfr
+      do j=1,scfz
+        do k=1,numphi        
+  	   density(i,numz/2+j,k)=rhoscf(i+1,j,k)
+        enddo
+      enddo
+    enddo	    
+    do i=1,scfr
+      do j=1,scfz
+        do k=1,numphi        
+  	   density(i,numz/2-j+1,k)=density(i,numz/2+j,k)
+        enddo
       enddo
     enddo
-  enddo
-
+    
+  else
+  	  
+    do i=1,numr
+      do j=1,numz/2
+        do k=1,numphi        
+  	   density(i,numz/2+j,k)=rhoscf(i+1,j,k)
+        enddo
+      enddo
+    enddo	
+    do i=1,numr
+      do j=1,numz/2
+        do k=1,numphi        
+  	   density(i,numz/2-j+1,k)=density(i,numz/2+j,k)
+        enddo
+      enddo
+    enddo
+    
+  endif
+  	  
+  
   do i=1, numr
     do j=1, numz
       do k=1, numphi
@@ -79,7 +99,8 @@ program main
  
 !#### Write binary output file ####
   
-  open(unit=15,file='density_shift.bin',form='unformatted',convert='BIG_ENDIAN',status='unknown')
+  open(unit=15,file='density_shift.bin',form='unformatted',convert= &
+       'BIG_ENDIAN',status='unknown')
   write(15) density
   close(15)   
    
