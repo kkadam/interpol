@@ -21,3 +21,5 @@ How to use:
    >>make
    >>./conv
 
+Notes:
+The output can be visualized using idl code idl_1.pro. 

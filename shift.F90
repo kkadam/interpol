@@ -35,25 +35,25 @@ subroutine shift(density,com)
   enddo
 
 !##### Visualize input ####
-  open(unit=10,file="star1i")
-         do j=1,numz
-           do i=1,numr  
-             write(10,*) i,j,density(i,j,1) 
-           enddo
-           write(10,*)
-         enddo
-  print*, "star1i"	
+!  open(unit=10,file="star1i")
+!         do j=1,numz
+!           do i=1,numr  
+!             write(10,*) i,j,density(i,j,1) 
+!           enddo
+!           write(10,*)
+!         enddo
+!  print*, "star1i"	
 
          
-  open(unit=10,file="star2i")
-         do j=1,numz
-           do i=1,numr  
-             write(10,*) i,j,density(i,j,numphi/2) 
-           enddo
-           write(10,*)
-         enddo
-       close(10) 
-  print*, "star2i"  
+!  open(unit=10,file="star2i")
+!         do j=1,numz
+!           do i=1,numr  
+!             write(10,*) i,j,density(i,j,numphi/2) 
+!           enddo
+!           write(10,*)
+!         enddo
+!       close(10) 
+!  print*, "star2i"  
   
   
 !#### Iterate over newdensity ####
@@ -87,8 +87,7 @@ subroutine shift(density,com)
           if (phis == numphi) then !!
             phil = 1 !!
           endif !!
-	
-!          call densityinterpolate(density,r0,phi0,z0,rhoint)     
+	  
 	
   
 !  print*,"floor r",floor(r0/dr+1/2),r0/dr+1/2,r0/dr+1/2.0, 1/2,1/2.0!"loop rs",rs, "r0", r0*512
@@ -115,9 +114,6 @@ subroutine shift(density,com)
          vs=(r(rs)+dr/2)**2-(r0-dr/2)**2   !
           vl=(r0+dr/2)**2-(r(rs)+dr/2)**2   !
 	
-!          vs=(r(rs)+dr/2)**2-(r(rs)-dr/2)**2
- !         vl=(r(rl)+dr/2)**2-(r(rl)-dr/2)**2
-	
           v=(r0+dr/2)**2-(r0-dr/2)**2          
           
           newdensity(i,j,k) = (rhol*vl+rhos*vs)/v
@@ -141,39 +137,26 @@ subroutine shift(density,com)
     enddo
   enddo	
 	
-         do i=1,numr
-           do j=1,numz
-             do k=1,numphi
-                if (density(i,j,k).gt.1.0) then
-!                  print*, i,j,k,density(i,j,k)
-                endif  
-             enddo
-           enddo
-         enddo
   
-  
-  open(unit=10,file="star1o")
-         do j=1,numz
-           do i=1,numr  
-             write(10,*) i,j,density(i,j,1) 
-!                if (density(i,j,1).gt.0.8) then
-!                  print*, i,j,density(i,j,1)
-!                endif  
-             enddo
-           write(10,*)
-         enddo
-  close(10) 
-  print*, "star1o"
+!  open(unit=10,file="star1o")
+!         do j=1,numz
+!           do i=1,numr  
+!             write(10,*) i,j,density(i,j,1) 
+!             enddo
+!           write(10,*)
+!         enddo
+!  close(10) 
+!  print*, "star1o"
          
-  open(unit=12,file="star2o")
-         do j=1,numz
-           do i=1,numr  
-             write(12,*) i,j,density(i,j,numphi/2) 
-           enddo
-           write(12,*)
-         enddo
-  close(12) 
-  print*, "star2o"  
+!  open(unit=12,file="star2o")
+!         do j=1,numz
+!           do i=1,numr  
+!             write(12,*) i,j,density(i,j,numphi/2) 
+!           enddo
+!           write(12,*)
+!         enddo
+!  close(12) 
+!  print*, "star2o"  
 
   
 end subroutine shift

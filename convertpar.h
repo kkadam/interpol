@@ -1,13 +1,13 @@
 !Gridsize of the SCF code (input)
-       integer, parameter :: scfr = 128!130!256
+       integer, parameter :: scfr = 130!256
        integer, parameter :: scfz = 130!130!256
-       integer, parameter :: numphi = 256!512
+       integer, parameter :: numphi = 256
 
-       double precision, parameter :: omega = 0.226163454382543 
+       double precision, parameter :: omega = 0.187582645012247 
        
 !Gridsize of the hydro code (output)       
-       integer, parameter :: numr = 130!354
-       integer, parameter :: numz = 10!2*scfz-2!258 
+       integer, parameter :: numr = 130!130
+       integer, parameter :: numz = 130!130
        
        integer, parameter :: numr_procs = 16
        integer, parameter :: numz_procs = 8
@@ -18,7 +18,6 @@
        double precision, parameter :: pi = acos(-1.0)
        
 
-!       double precision, parameter :: com = -0.388452020466794 
 
 
 ! restrictions on the above parameters:
@@ -43,3 +42,5 @@
 !  numr_procs must be an even number
 !
 !  numz_procs must be an even number
+
+

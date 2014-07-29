@@ -23,7 +23,7 @@ program main
 !#### Find center of mass of the given system ####  
    call com_initial(rhoscf, com)
  
-   print*, "com =",com
+!   print*, "com =",com
    
 
   
@@ -90,7 +90,7 @@ program main
 !#### Print if the shift is successful ####   
 
   if (com_new.lt.dr) then
-    print*, "New com is less than dr"
+!    print*, "New com is less than dr"
   else
     print*, "CoM shift FAILED!"
     print*,"com_new =",com_new
@@ -103,14 +103,15 @@ program main
        'BIG_ENDIAN',status='unknown')
   write(15) density
   close(15)   
-   
-  print*, 'File density_shift.bin printed'  
+  print*, '==========================OUTPUT============================='  
+  print*, 'File density_shift.bin printed (can be tested with idl_1.pro)'  
 
 !#### Write output files for flower code ####  
   
   call outfiles(density)
    	
   call fort	
-
+  
+  print*, '============================================================='
 	
 end program main

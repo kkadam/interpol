@@ -2,8 +2,8 @@ pro idl_1
 
 ;#### Set grid ####
 
-  numr=512
-  numz=258
+  numr=130
+  numz=130
   numphi=256
   pi=3.1415
   omega=0.112

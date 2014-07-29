@@ -26,16 +26,16 @@ subroutine outfiles(density)
      
 !Test angular momentum
 	
-  open(unit=10,status='replace',file='test_amd')
-    do j=1,numz
-       do i=1,numr
-          write(10,*) i,j,ang_mom(i,j,101)
-       enddo
-       write(10,*)
-    enddo
-  close(10)  
+!  open(unit=10,status='replace',file='test_amd')
+!    do j=1,numz
+!       do i=1,numr
+!          write(10,*) i,j,ang_mom(i,j,101)
+!       enddo
+!       write(10,*)
+!    enddo
+!  close(10)  
   
-  print*, 'File test_amd printed' 
+!  print*, 'File test_amd printed' 
   
 !#### Find radial momentum density ####
 	
