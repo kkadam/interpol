@@ -4,8 +4,22 @@ subroutine fort
 
   integer :: isym, model_type, tstart, tstop, do_diag, isoadi, call_pot, &
              zero_out, bc1, bc2, bc3
-  double precision :: vmax, constp, densmin, taumin, rho_boundary, q, viscosity
-   
+  double precision :: vmax, constp, densmin, taumin, rho_boundary, q,    &
+                      viscosity, gammac, gammae
+  double precision :: tauarray(4)
+
+
+  densmin = 1.0e-10 
+
+  gammac = 1.0+1/np1
+  gammae = 1.0+1/np2
+
+  tauarray(1) = (kappa1/(gammae-1))**(1/gammae)*densmin
+  tauarray(2) = (kappa2/(gammae-1))**(1/gammae)*densmin
+  tauarray(3) = (kappac1/(gammac-1))**(1/gammac)*densmin
+  tauarray(4) = (kappac2/(gammac-1))**(1/gammac)*densmin
+
+  taumin = minval(tauarray)
 
   OPEN(UNIT=10,FILE="template/run/fort.7")
   
@@ -33,15 +47,16 @@ subroutine fort
   
   WRITE(10,*) np1, np2                                     !8
   
-  WRITE(10,*) omega, 120, omega                            !9
+  if (omega.lt.1d-2) then
+    WRITE(10,*) omega, 120, 0.4                            !9
+  else
+    WRITE(10,*) omega, 120, omega
+  endif
 
   vmax = 5.0                   
   constp = 0.0
-  WRITE(10,*) vmax, constp                                 !10
-  
-  
-  densmin = 1.0e-10                    
-  taumin = 1.0669e-11
+  WRITE(10,*) vmax, constp                                 !10  
+
   WRITE(10,*) densmin, taumin                              !11
   
   bc1 = 3
