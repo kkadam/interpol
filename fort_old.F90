@@ -1,4 +1,4 @@
-subroutine fort
+subroutine fort_old
   implicit none
   include "convertpar.h"
 
@@ -23,41 +23,33 @@ subroutine fort
   zero_out = 0
   WRITE(10,*) isoadi, call_pot, zero_out                   !3 
   
-  WRITE(10,*) pin, gamma                                   !4
+  WRITE(10,*) pin, gamma, kappa1, kappa2                   !4
 
-  WRITE(10,*) kappa1, kappa2                               !5
-
-  WRITE(10,*) kappac1, kappac2                             !6
-
-  WRITE(10,*) rho_c1, rho_c2                               !7
-  
-  WRITE(10,*) np1, np2                                     !8
-  
-  WRITE(10,*) omega, 120, omega                            !9
+  WRITE(10,*) omega, 120, omega                            !5
 
   vmax = 5.0                   
   constp = 0.0
-  WRITE(10,*) vmax, constp                                 !10
+  WRITE(10,*) vmax, constp                                 !6
   
   
   densmin = 1.0e-10                    
   taumin = 1.0669e-11
-  WRITE(10,*) densmin, taumin                              !11
+  WRITE(10,*) densmin, taumin                              !7
   
   bc1 = 3
   bc2 = 3
   bc3 = 3
-  WRITE(10,*) bc1, bc2, bc3                                !12
+  WRITE(10,*) bc1, bc2, bc3                                !8
   
   rho_boundary = 1.0e-5 
   q = 0.1000000000
   viscosity = 2.0
-  WRITE(10,*) rho_boundary, q, viscosity                   !13 
+  WRITE(10,*) rho_boundary, q, viscosity                   !9
 
   CLOSE(10)
   write(*,*) "File fort.7 printed"	  
   
-end subroutine fort  
+end subroutine fort_old  
 
 
 !*
@@ -80,35 +72,14 @@ end subroutine fort
 !                       1 => solve for          inner zero_out zones in j 
 !                       self-gravity            for all k and l
 !                       potential of fluid
-!  pin                  gamma            
-!  polytropic           polytropic      
-!  index                exponent        
-!                                                            
-!
-! kappa1                        kappa2                        !bipoly 
-! polytropic constant for       polytropic constant for 
-! 0 <= phi < pi/2               pi/2 <= phi < 3 pi/2
-! 3 pi/2 <= phi < 0       
-!
-!                               
-! kappac1                       kappac2 
-! polytropic constant for       polytropic constant for 
-! the core                      the core
-! 0 <= phi < pi/2               pi/2 <= phi < 3 pi/2
-! 3 pi/2 <= phi < 0     
-!
-!
-! rho_c1                        rho_c2
-! threshold density above       threshold density above
-! which the material            which the material
-! belongs to the core for       belongs to the core for
-! star1                         star2
-!
-!
-!  np1                          np2 
-!  Structural polytropic        Structural polytropic
-!  indx of both the core        indx of both the envelopes
-!
+
+!  pin          gamma           kappa1          kappa2 
+!  polytropic   polytropic      polytropic      polytropic
+!  index        exponent        constant for    constant for
+!                               0 <= phi <      pi/2 <= phi <
+!                               pi/2 and        3 pi/2
+!                               3 pi/2 <=
+!                               phi < 0
 !               
 !  omgfrm               intrvl                  scfomega
 !  angular frequency    number of frames to     angular frequency of

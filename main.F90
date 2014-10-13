@@ -2,115 +2,84 @@ program main
   implicit none
   include "convertpar.h"
   double precision :: density(numr,numz,numphi)
-  double precision :: rhoscf(scfr,scfz,numphi)
+  double precision :: rho_temp(scfr,scfz,numphi)
 
   integer :: i,j,k
   double precision :: dr, com, com_new
          
 
 !########################### Start Program #########################  
- 
-  dr=1.0/(numr-3)
+
+  print*, '============================================================='
+  print*, "Conversion started"	
+  print*, '============================================================='
+  
+  dr=1.0/(numr_deltar-deltar_parameter)
   
 !#### Read from input file ####
 	
-  open(unit = 10, file='density.bin',form='unformatted', convert= "BIG_ENDIAN", &
-        status='unknown')   
-    read(10) rhoscf
-  close(10)  
+       open(unit=8,file='density.bin',                                   &
+           form='unformatted',convert='BIG_ENDIAN',status='unknown')
+       read(8) rho_temp
+       close(8)
+       
+       
+!#### Print input files ####     
+	
+  open(unit=12,file="star1")
+         do j=1,scfz
+           do i=1,scfr
+             write(12,*) i,j,rho_temp(i,j,1)
+           enddo
+           write(12,*)
+         enddo
+  close(12)         
+  print*,"File star1 printed"     
 
+    open(unit=12,file="star2")
+         do j=1,scfz
+           do i=1,scfr
+             write(12,*) i,j,rho_temp(i,j,numphi/2)
+           enddo
+           write(12,*)
+         enddo
+  close(12)         
+  print*,"File star2 printed"
+  
   
 !#### Find center of mass of the given system ####  
-   call com_initial(rhoscf, com)
- 
-!   print*, "com =",com
+	
+   call com_initial(rho_temp, com)  
+   print*, "Initial CoM = ",com
+
    
-
-  
-!#### Get 3D axisymmetric density ####
-	
-  density = 1d-10
- 
-  if (scfz.lt.numz/2) then
-	
-    do i=1,scfr
-      do j=1,scfz
-        do k=1,numphi        
-  	   density(i,numz/2+j,k)=rhoscf(i+1,j,k)
-        enddo
-      enddo
-    enddo	    
-    do i=1,scfr
-      do j=1,scfz
-        do k=1,numphi        
-  	   density(i,numz/2-j+1,k)=density(i,numz/2+j,k)
-        enddo
-      enddo
-    enddo
-    
-  else
-  	  
-    do i=1,numr
-      do j=1,numz/2
-        do k=1,numphi        
-  	   density(i,numz/2+j,k)=rhoscf(i+1,j,k)
-        enddo
-      enddo
-    enddo	
-    do i=1,numr
-      do j=1,numz/2
-        do k=1,numphi        
-  	   density(i,numz/2-j+1,k)=density(i,numz/2+j,k)
-        enddo
-      enddo
-    enddo
-    
-  endif
-  	  
-  
-  do i=1, numr
-    do j=1, numz
-      do k=1, numphi
-        if (density(i,j,k) .lt. 1d-9) then
-          density(i,j,k)=  1d-10
-        endif
-      enddo
-    enddo
-  enddo    
-  
-
 !#### Shift the grid to com and interpolate ####
   
-  call shift(density, com)  
+   if (binary_system) then
+     call cubic_translation(rho_temp, com)  
+     print*,"cubic interpolation performed"
+     call com_initial(rho_temp, com)  
+     print*, "Final CoM = ",com
+   else
+     print*, "Cubic interpolation NOT performed for the single star"
+   endif
+     
+!#### Find center of mass of the new system ####  
+	
+   print*, "Normalized dr = ", dr!*numr/scfr
+   
+!#### Call initial condition function ####   
   
-!#### Find center of mass of the final system ####    
+  call initial_conditions(rho_temp,density)
   
-  call com_final(density, com_new)  
 
-!#### Print if the shift is successful ####   
-
-  if (com_new.lt.dr) then
-!    print*, "New com is less than dr"
+!#### Print fort.7 file ####   
+  if (bipoly) then	
+     call fort	
   else
-    print*, "CoM shift FAILED!"
-    print*,"com_new =",com_new
-    print*, "dr =", dr  
-  endif     
- 
-!#### Write binary output file ####
-  
-  open(unit=15,file='density_shift.bin',form='unformatted',convert= &
-       'BIG_ENDIAN',status='unknown')
-  write(15) density
-  close(15)   
-  print*, '==========================OUTPUT============================='  
-  print*, 'File density_shift.bin printed (can be tested with idl_1.pro)'  
-
-!#### Write output files for flower code ####  
-  
-  call outfiles(density)
-   	
-  call fort	
+     call fort_old
+  endif   
+  	  
   
   print*, '============================================================='
 	
