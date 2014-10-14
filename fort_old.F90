@@ -13,9 +13,7 @@ subroutine fort_old
   tauarray(1) = (kappa1/(gamma-1))**(1/gamma)*densmin
   tauarray(2) = (kappa2/(gamma-1))**(1/gamma)*densmin
 
-  taumin = minval(tauarray)   
-
-  print*, tauarray
+  taumin = minval(tauarray)    
 
   OPEN(UNIT=10,FILE="template/run/fort.7")
   

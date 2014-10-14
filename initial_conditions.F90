@@ -70,7 +70,7 @@ subroutine initial_conditions(rho_temp,rho)
     rho= 1d-10
 
     do i=1,rmin
-      do j=1,zmin
+      do j=1,zmin-1 ! -1 for horizontal strips above & below 
         do k=1,numphi        
   	   rho(i,numz/2+j,k)=rho_temp(i,j+1,k)
         enddo

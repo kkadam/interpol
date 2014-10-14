@@ -70,7 +70,7 @@ program main
    
 !#### Call initial condition function ####   
   
-!  call initial_conditions(rho_temp,density)
+  call initial_conditions(rho_temp,density)
   
 
 !#### Print fort.7 file ####   
