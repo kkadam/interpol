@@ -24,7 +24,7 @@
        phi4 = int(3.0 * numphi / 4.0) + 1
 
        phic = numphi/2 + 1
-       dr = 1.0/(scfr-3.0)
+       dr=1.0/(numr_deltar-deltar_parameter)
        dphi = 2.0*pi/numphi
        factor = 2.0*dr*dr*dphi
        rhf(1) = - dr/2.0

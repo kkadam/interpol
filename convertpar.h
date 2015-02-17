@@ -2,25 +2,26 @@
        integer, parameter :: scfr = 130
        integer, parameter :: scfz = 130
        integer, parameter :: numphi = 256
-       integer, parameter :: numr_deltar = 60
-       double precision, parameter :: deltar_parameter = 1.5      !1.5 for single star
+       integer, parameter :: numr_deltar = 130                     !Equatorial radius of single star
+       double precision, parameter :: deltar_parameter = 3.0      !1.5 for single star, 3 for binary
 
-       double precision, parameter :: omega = 5.491239714772673E-003
+       double precision, parameter :: omega = 0.117618743385123
        double precision, parameter :: pin = 1.5
-       double precision, parameter :: kappa1 = 0.239857137710960
-       double precision, parameter :: kappa2 = 0.239857137710960
-       double precision, parameter :: kappac1 = 4.543891552918972E-002
-       double precision, parameter :: kappac2 = 4.543891552918972E-002
-       double precision, parameter :: rho_c1 = 0.2
-       double precision, parameter :: rho_c2 = 0.2
-       double precision, parameter :: np1 = 3.0
-       double precision, parameter :: np2 = 1.5
+       double precision, parameter :: kappa1 = 1.594097873254268E-002
+       double precision, parameter :: kappa2 = 1.610290303676678E-002
+       double precision, parameter :: kappac1 = 2.406507462652409E-002
+       double precision, parameter :: kappac2 = 2.406507462652410E-002
+       double precision, parameter :: rho_c1 = 0.7581 
+       double precision, parameter :: rho_c2 = 0.7581
+       double precision, parameter :: np1 = 1.0
+       double precision, parameter :: np2 = 1.0
        
-       logical, parameter :: bipoly = .true.
-       logical, parameter :: binary_system = .false.
+       logical, parameter :: bipoly = .false.
+       logical, parameter :: binary_system =.true. 
+
 !Gridsize of the hydro code (output)       
-       integer, parameter :: numr = 130
-       integer, parameter :: numz = 130
+       integer, parameter :: numr = 162
+       integer, parameter :: numz = 98
        
        integer, parameter :: numr_procs = 8
        integer, parameter :: numz_procs = 8
