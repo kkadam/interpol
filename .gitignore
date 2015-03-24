@@ -1,0 +1,20 @@
+# Object files
+*.o
+
+# Input and parameter files
+batchscript
+runhydro.h
+convertpar.h
+density.bin
+
+# Output and temp files
+readme
+rho.bin
+star1
+star1o
+star2
+star2o
+template/
+
+# Binary
+conv
