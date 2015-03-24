@@ -3,8 +3,9 @@
 ### Evaluate these at each run ###
 # n_core and n_env ahve to be the same for both the stars #
 scfdir=/work/kkadam/scf_runs/m9
-out_dir=sim11
-message="q0.35 bibi"
+sim=testy_test
+out_dir=/work/kkadam/scf_staging
+message="porting interpol to qb"
 hydro_dir=/home/kkadam/codes/bipoly_hydro
 walltime=02:00:00
 pin=1.5
@@ -76,23 +77,13 @@ sed -i "26i\       integer, parameter :: numr_procs = $numr_procs" $fn
 sed -i "27i\       integer, parameter :: numz_procs = $numz_procs" $fn
 
 ### Move the template dir and run the interpol code ###
-if [ -d template ]; then
-  chmod 755 template 
-  rm -r template
-fi
-
-
-mkdir template
-mkdir template/input template/additional_data template/run template/output
-mkdir template/input/conts
-mkdir template/output/data template/output/conts template/output/unscramble
-
-cp $scfdir/density.bin . 
+#if [ -d template ]; then
+#  chmod 755 template 
+#  rm -r template
+#fi
 
 make cl
 make
-./conv
-
 
 ### Make runhydro.h file ###
 sed -i -e '1,10d' $rn
@@ -114,15 +105,6 @@ sed -i -e '3d' firststart.sh
 sed -i "3i\hydro_dir=$hydro_dir  " firststart.sh
 echo $message > readme
 
-### Copy additional_data files ###
-cp convertpar.h template/additional_data
-cp $scfdir/runscf.h template/additional_data
-cp $scfdir/init template/additional_data
-cp $scfdir/model_details_100000 template/additional_data
-cp $scfdir/autoread.dat template/additional_data
-cp runhydro.h template/additional_data
-cp firststart.sh template
-cp readme template 
 
 ### batchscript and unscramble files ###
 #declare -i nodes
@@ -136,17 +118,49 @@ sed -i "5i\#PBS -l walltime=$walltime" batchscript
 sed -i "8i\#PBS -N $out_dir" batchscript
 sed -i "14i\mpirun_rsh -np $total_procs -hostfile \$PBS_NODEFILE <location_of_hydro_exec>" batchscript
 
-cp batchscript template
-cp unscramble.sh template
+
+
+cwd=$(pwd)
+
+cd $out_dir
+
+if [ -d template ]; then
+  chmod 755 template 
+  rm -r template
+fi
+
+mkdir template
+mkdir template/input template/additional_data template/run template/output
+mkdir template/input/conts
+mkdir template/output/data template/output/conts template/output/unscramble
+
+cp $scfdir/density.bin . 
+cp $cwd/conv .
+cp $cwd/convertpar.h .
+
+./conv
+
+### Copy additional_data files ###
+cp $cwd/convertpar.h template/additional_data
+cp $scfdir/runscf.h template/additional_data
+cp $scfdir/init template/additional_data
+cp $scfdir/model_details_100000 template/additional_data
+cp $scfdir/autoread.dat template/additional_data
+cp $cwd/runhydro.h template/additional_data
+cp $cwd/firststart.sh template
+cp $cwd/readme template 
+
+cp $cwd/batchscript template
+cp $cwd/unscramble.sh template
 
 
 ### Change dir name ###
-if [ -d $out_dir ]; then
-  chmod 775 $out_dir
-  rm -r $out_dir
+if [ -d $sim ]; then
+  chmod 775 $sim
+  rm -r $sim
 fi
-mv template $out_dir
+mv template $sim
 
-echo " All files in directory $out_dir, Like a boass."
+echo " All files in directory $out_dir/$sim, Like a boass."
 echo " ============================================================="
 
