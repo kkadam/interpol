@@ -1,6 +1,6 @@
 #!/bin/bash
 cwd=$(pwd)
-hydro_dir=/work/kkadam/bipoly_hydro  
+hydro_dir=/home/kkadam/codes/bipoly_hydro  
 
 
 cp additional_data/runhydro.h $hydro_dir

@@ -1,15 +1,15 @@
 #!/bin/bash
 #PBS -q workq
 #PBS -A loni_lrn01 
-#PBS -l nodes=8:ppn=8
+#PBS -l nodes=16:ppn=8
 #PBS -l walltime=02:00:00
 #PBS -o pbs_out
 #PBS -j oe
-#PBS -N sim2
+#PBS -N sim11
 
 # mpi jobs would execute:
 
 cd $PBS_O_WORKDIR
 
-mpirun_rsh -np 64 -hostfile $PBS_NODEFILE <location_of_hydro_exec>
+mpirun_rsh -np 128 -hostfile $PBS_NODEFILE <location_of_hydro_exec>
 

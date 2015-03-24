@@ -10,8 +10,8 @@ subroutine fort_old
 
   densmin = 1.0e-10
   
-  write (char_kappa1, "(F8.6)") kappa1
-  write (char_kappa2, "(F8.6)") kappa2
+  write (char_kappa1, "(F9.6)") kappa1
+  write (char_kappa2, "(F9.6)") kappa2
 
   tauarray(1) = (kappa1/(gamma-1))**(1/gamma)*densmin
   tauarray(2) = (kappa2/(gamma-1))**(1/gamma)*densmin

@@ -2,22 +2,22 @@
 
 ### Evaluate these at each run ###
 # n_core and n_env ahve to be the same for both the stars #
-scfdir=/work/kkadam/scf_staging/m4
-out_dir=sim9
-message="test"
+scfdir=/work/kkadam/scf_runs/m9
+out_dir=sim11
+message="q0.35 bibi"
 hydro_dir=/home/kkadam/codes/bipoly_hydro
 walltime=02:00:00
 pin=1.5
 bipoly=.true.
-numr=162
-numz=98
-numr_procs=8
+numr=386
+numz=258
+numr_procs=16
 numz_procs=8
 ppn=8
 #number of orbits
 dragtime=1.6
 #% of AM removed/orbit
-reallyadrag=1.0e-2
+reallyadrag=0.0
 
 
 ### Import parameters from the binary SCF ###
