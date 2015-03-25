@@ -2,9 +2,9 @@
 
 ### Evaluate these at each run ###
 # n_core and n_env ahve to be the same for both the stars #
-scfdir=/work/kkadam/scf_runs/m9
-sim=testy_test
-out_dir=/work/kkadam/scf_staging
+scfdir=/work/kkadam/scf_runs/m11
+sim=sim12
+out_dir=/work/kkadam/prep_scf
 message="porting interpol to qb"
 hydro_dir=/home/kkadam/codes/bipoly_hydro
 walltime=02:00:00
@@ -22,8 +22,16 @@ reallyadrag=0.0
 
 
 ### Import parameters from the binary SCF ###
-datastr=`cat $scfdir/autoread.dat`
-arr=($datastr)
+if [ -f $scfdir/autoread.dat ] && [ -f $scfdir/density.bin ]; then
+   datastr=`cat $scfdir/autoread.dat`
+   arr=($datastr)
+else 
+   echo " ============================================================="
+   echo " File autoread.dat or density.bin is missing!! " 
+   echo " ============================================================="
+   exit
+fi
+
 #echo ${#arr[@]}
 #echo ${arr[@]}
 
@@ -142,16 +150,24 @@ cp $cwd/convertpar.h .
 
 ### Copy additional_data files ###
 cp $cwd/convertpar.h template/additional_data
+cp $cwd/firststart.sh template
+cp $cwd/readme template
+cp $cwd/batchscript template
+cp $cwd/unscramble.sh template
+cp $cwd/runhydro.h template/additional_data
+cp $cwd/star1o template/additional_data
+cp $cwd/star2o template/additional_data
+
+cp $scfdir/readme template/additional_data/readme_scf
+sed -i "2i\ $scfdir" template/additional_data/readme_scf
 cp $scfdir/runscf.h template/additional_data
 cp $scfdir/init template/additional_data
 cp $scfdir/model_details_100000 template/additional_data
 cp $scfdir/autoread.dat template/additional_data
-cp $cwd/runhydro.h template/additional_data
-cp $cwd/firststart.sh template
-cp $cwd/readme template 
+cp $scfdir/iteration_log template/additional_data
+cp $scfdir/star1 template/additional_data
+cp $scfdir/star2 template/additional_data
 
-cp $cwd/batchscript template
-cp $cwd/unscramble.sh template
 
 
 ### Change dir name ###
