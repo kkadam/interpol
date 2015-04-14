@@ -2,11 +2,11 @@
        implicit none
        include 'convertpar.h'
 
-       double precision x(scfr,numphi), y(scfr,numphi)
+       double precision x(padr,numphi), y(padr,numphi)
        double precision cosine(numphi), sine(numphi)
-       double precision phi(numphi), rhf(scfr)
-       double precision rhonew(scfr,scfz,numphi), rho(scfr,scfz,numphi)
-       double precision rnew(scfr,numphi), phinew(scfr,numphi)
+       double precision phi(numphi), rhf(padr)
+       double precision rhonew(padr,scfz,numphi), rho(padr,scfz,numphi)
+       double precision rnew(padr,numphi), phinew(padr,numphi)
        double precision dr, dphi, xdisp, u, t
        double precision xavg1, xavg2, com, seperation
        double precision mass1, mass2, yavg1, yavg2, factor 
@@ -14,7 +14,7 @@
        double precision c(4,4), sum
        integer i, j, k, l, m, q, w, phic, z
        integer phi1, phi2, phi3, phi4
-       integer index(scfr,numphi,2)
+       integer index(padr,numphi,2)
        integer mm, mp, mpp, lm, lp, lpp
        
        
@@ -24,12 +24,13 @@
        phi4 = int(3.0 * numphi / 4.0) + 1
 
        phic = numphi/2 + 1
-       dr=1.0/(numr_deltar-deltar_parameter)
+       dr=1.0/(numr_deltar-deltar_parameter)  !Not sure if this needs to be
+                                              !changed because of padr 
        dphi = 2.0*pi/numphi
        factor = 2.0*dr*dr*dphi
        rhf(1) = - dr/2.0
        phi(1) = 0.0
-       do i = 2,scfr
+       do i = 2,padr
           rhf(i) = rhf(i-1) + dr
        enddo
        do i = 2,numphi
@@ -40,7 +41,7 @@
           sine(i) = sin(phi(i))
        enddo
        do i = 1,numphi
-          do j = 2,scfr
+          do j = 2,padr
              x(j,i) = rhf(j)*cosine(i)
              y(j,i) = rhf(j)*sine(i)
           enddo
@@ -48,7 +49,7 @@
        
 !  Begin actual translation section
        do i = 1,numphi
-          do k = 2,scfr
+          do k = 2,padr
              xdisp = x(k,i) + com
              rnew(k,i) = sqrt(xdisp*xdisp+y(k,i)*y(k,i))
              if((xdisp.gt.0.0).and.(y(k,i).gt.0.0)) then
@@ -74,8 +75,8 @@
        enddo
 
        do i = 1,numphi
-          do k = 2,scfr
-             do l = 2,scfr-1
+          do k = 2,padr
+             do l = 2,padr-1
                 if(rnew(k,i).le.rhf(2)) then
                    index(k,i,1) = 1
                 elseif((rhf(l).le.rnew(k,i)).and.                &
@@ -83,11 +84,11 @@
                    index(k,i,1) = l
                 endif
              enddo
-             if(index(k,i,1).eq.0) index(k,i,1) = scfr-1
+             if(index(k,i,1).eq.0) index(k,i,1) = padr-1
           enddo
        enddo
        do i = 1,numphi
-          do k = 2,scfr
+          do k = 2,padr
              do l = 1,numphi-1
                 if((phi(l).le.phinew(k,i)).and.                  &
                   (phinew(k,i).lt.phi(l+1))) then
@@ -101,7 +102,7 @@
        enddo
        do i = 1,numphi
           do j = 2,scfz
-             do k = 2,scfr
+             do k = 2,padr
                 l = index(k,i,1)
                 m = index(k,i,2)
                 t = (rnew(k,i)-rhf(l))/dr
@@ -126,7 +127,7 @@
                 lm = l - 1
                 lp = l + 1
                 lpp = l + 2
-                if(l.eq.scfr-1) then
+                if(l.eq.padr-1) then
                    rhonew(k,j,i) = 0.0 
                 elseif(l.eq.1) then
                    t = 2.0*rnew(k,i)/dr
@@ -173,7 +174,7 @@
 
 !  Set up boundary zones for equatorial plane & z axis
        do i = 1,numphi
-          do k = 1,scfr
+          do k = 1,padr
              rhonew(k,1,i) = rhonew(k,2,i)
           enddo
        enddo

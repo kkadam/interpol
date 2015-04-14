@@ -1,8 +1,8 @@
-subroutine initial_conditions(rho_temp,rho)
+subroutine initial_conditions(rho_pad,rho)
        implicit none
        include 'convertpar.h'
        double precision, dimension(numr,numz,numphi) :: rho, a, s, rhjkl 
-       double precision, dimension(scfr,scfz,numphi) :: rho_temp
+       double precision, dimension(padr,scfz,numphi) :: rho_pad
        double precision, dimension(numr) :: rhf, r, rinv
        double precision, dimension(numphi) :: cos_cc, sin_cc
        double precision, dimension(numphi) :: cos_vc, sin_vc
@@ -15,7 +15,7 @@ subroutine initial_conditions(rho_temp,rho)
 !       common /dummy/ rho, a, s, rhjkl, rho_temp
 !###############################################################################
 
-       jmax2 = scfr
+       jmax2 = padr
        kmax2 = scfz-1
        
        ! setup the coordiante grid
@@ -58,13 +58,13 @@ subroutine initial_conditions(rho_temp,rho)
        rho = 0.0  
   
 !       write(*,*) 'Max value of orig: ',maxval(rho_temp)
-       pos = maxloc(rho_temp)
+       pos = maxloc(rho_pad)
 !       write(*,*) '@: ',pos(1), pos(2), pos(3)
 !       write(*,*) '@: ',rhf(pos(1)), float(pos(3)-1)*dphi
 
-    rmin=min(scfr,numr)
+    rmin=min(padr,numr)
     zmin=min(scfz,numz/2)
-	
+
 !    print*, "rmin",rmin,"zmin",zmin
     
     rho= 1d-10
@@ -72,14 +72,14 @@ subroutine initial_conditions(rho_temp,rho)
     do i=1,rmin
       do j=1,zmin-1 ! -1 for horizontal strips above & below 
         do k=1,numphi        
-  	   rho(i,numz/2+j,k)=rho_temp(i,j+1,k)
+          rho(i,numz/2+j,k)=rho_pad(i,j+1,k)
         enddo
       enddo
-    enddo	    
+    enddo    
     do i=1,rmin
       do j=1,zmin
         do k=1,numphi        
-  	   rho(i,numz/2-j+1,k)=rho(i,numz/2+j,k)
+          rho(i,numz/2-j+1,k)=rho(i,numz/2+j,k)
         enddo
       enddo
     enddo   
@@ -88,8 +88,8 @@ subroutine initial_conditions(rho_temp,rho)
       do j=1,zmin
         do k=1,numphi
            if (rho(i,j,k).lt.1d-10) then
- 	      rho(i,j,k)=1d-10
-  	   endif
+             rho(i,j,k)=1d-10
+           endif
         enddo
       enddo
     enddo            
@@ -218,7 +218,7 @@ subroutine initial_conditions(rho_temp,rho)
        close(18)
        print*,"File rho.bin printed"
 
-  open(unit=12,file="star1o")
+  open(unit=12,file="star1o",status='unknown')
          do j=1,numz
            do i=1,numr
              write(12,*) i,j,rho(i,j,1)
@@ -228,7 +228,7 @@ subroutine initial_conditions(rho_temp,rho)
   close(12)          
   print*,"File star1o printed"   
   
-  open(unit=12,file="star2o")
+  open(unit=12,file="star2o",status='unknown')
          do j=1,numz
            do i=1,numr
              write(12,*) i,j,rho(i,j,numphi/2)
@@ -324,7 +324,7 @@ subroutine initial_conditions(rho_temp,rho)
 !       write(*,*) minloc(a)
 !       write(*,*) maxloc(s)
 !       write(*,*) minloc(s)
-	
-	print*, "Files density, ang_mom, rad_mom printed"
+
+       print*, "Files density, ang_mom, rad_mom printed"
 
 end subroutine initial_conditions
