@@ -1,18 +1,18 @@
 #!/bin/bash
 
 ### Evaluate these at each run ###
-# n_core and n_env ahve to be the same for both the stars #
-scfdir=/work/kkadam/scf_runs/m11
-sim=sim12
+# n_core and n_env have to be the same for both the stars #
+scfdir=/work/kkadam/scf_runs/m46
+sim=sims
 out_dir=/work/kkadam/prep_scf
-message="porting interpol to qb"
+message="q=0.26 bibi, m49"
 hydro_dir=/home/kkadam/codes/bipoly_hydro
-walltime=02:00:00
+walltime=24:00:00
 pin=1.5
 bipoly=.true.
-numr=386
-numz=258
-numr_procs=16
+numr=162
+numz=98
+numr_procs=8
 numz_procs=8
 ppn=8
 #number of orbits
@@ -123,7 +123,7 @@ sed -i -e '4d;5d;8d;14d' batchscript
 
 sed -i "4i\#PBS -l nodes=$nodes:ppn=$ppn" batchscript
 sed -i "5i\#PBS -l walltime=$walltime" batchscript
-sed -i "8i\#PBS -N $out_dir" batchscript
+sed -i "8i\#PBS -N $sim" batchscript
 sed -i "14i\mpirun_rsh -np $total_procs -hostfile \$PBS_NODEFILE <location_of_hydro_exec>" batchscript
 
 
@@ -155,8 +155,6 @@ cp $cwd/readme template
 cp $cwd/batchscript template
 cp $cwd/unscramble.sh template
 cp $cwd/runhydro.h template/additional_data
-cp $cwd/star1o template/additional_data
-cp $cwd/star2o template/additional_data
 
 cp $scfdir/readme template/additional_data/readme_scf
 sed -i "2i\ $scfdir" template/additional_data/readme_scf
@@ -167,7 +165,8 @@ cp $scfdir/autoread.dat template/additional_data
 cp $scfdir/iteration_log template/additional_data
 cp $scfdir/star1 template/additional_data
 cp $scfdir/star2 template/additional_data
-
+cp $out_dir/star1o template/additional_data
+cp $out_dir/star2o template/additional_data
 
 
 ### Change dir name ###
