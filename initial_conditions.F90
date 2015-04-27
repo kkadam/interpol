@@ -212,34 +212,7 @@ subroutine initial_conditions(rho_pad,rho)
    print*, '======================================================='
    print*,"Output files"
    print*, '======================================================='
-      open(unit=18,file='rho.bin',                                   &
-           form='unformatted',convert='BIG_ENDIAN',status='unknown')
-       write(18) rho
-       close(18)
-       print*,"File rho.bin printed"
 
-  open(unit=12,file="star1o",status='unknown')
-         do j=1,numz
-           do i=1,numr
-             write(12,*) i,j,rho(i,j,1)
-           enddo
-           write(12,*)
-         enddo
-  close(12)          
-  print*,"File star1o printed"   
-  
-  open(unit=12,file="star2o",status='unknown')
-         do j=1,numz
-           do i=1,numr
-             write(12,*) i,j,rho(i,j,numphi/2)
-           enddo
-           write(12,*)
-         enddo
-  close(12)          
-  print*,"File star2o printed"     
-       
-       
-       
        inquire(iolength=record_length) rho(1:numr_dd,1:numz_dd,:)
  
        open(unit=10,file='template/input/density',        &

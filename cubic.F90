@@ -2,13 +2,16 @@
        implicit none
        include 'convertpar.h'
 
+       double precision, intent(in) :: com
+       double precision rho(padr,scfz,numphi)  !intent is in & out
+
        double precision x(padr,numphi), y(padr,numphi)
        double precision cosine(numphi), sine(numphi)
        double precision phi(numphi), rhf(padr)
-       double precision rhonew(padr,scfz,numphi), rho(padr,scfz,numphi)
+       double precision rhonew(padr,scfz,numphi)
        double precision rnew(padr,numphi), phinew(padr,numphi)
        double precision dr, dphi, xdisp, u, t
-       double precision xavg1, xavg2, com, seperation
+       double precision xavg1, xavg2, seperation
        double precision mass1, mass2, yavg1, yavg2, factor 
        double precision f(4), dfdr(4), dfdp(4),d2f(4)
        double precision c(4,4), sum

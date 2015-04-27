@@ -1,15 +1,20 @@
-subroutine fort
+subroutine fort(com_i)
   implicit none
   include "convertpar.h"
+
+  double precision, intent(in) :: com_i
 
   integer :: isym, model_type, tstart, tstop, do_diag, isoadi, call_pot, &
              zero_out, bc1, bc2, bc3
   double precision :: vmax, constp, densmin, taumin, rho_boundary, q,    &
-                      viscosity, gammac, gammae
+                      viscosity, gammac, gammae, rho_th1, rho_th2
   double precision :: tauarray(4)
 
 
   densmin = 1.0e-10 
+
+  rho_th1=(rho_c1d+rho_1d)/2
+  rho_th2=(rho_c2e+rho_2e)/2
 
   gammac = 1.0+1/np1
   gammae = 1.0+1/np2
@@ -43,7 +48,7 @@ subroutine fort
 
   WRITE(10,*) kappac1, kappac2                             !6
 
-  WRITE(10,*) rho_c1, rho_c2                               !7
+  WRITE(10,*) rho_th1, rho_th2                             !7
   
   WRITE(10,*) np1, np2                                     !8
   
@@ -68,6 +73,9 @@ subroutine fort
   q = 0.1000000000
   viscosity = 2.0
   WRITE(10,*) rho_boundary, q, viscosity                   !13 
+
+  WRITE(10,*) com_i                                        !14
+
 
   CLOSE(10)
   write(*,*) "File fort.7 printed"	  
@@ -165,6 +173,10 @@ end subroutine fort
 !  viscosity (On same line as rho_boundary and q)
 !  isotropic coeeficient of the 
 !  artificial viscosity
+!
+!  com
+!  Center of mass is used for defining
+!  separating boundary between the two stars
 !
 !*
 !*********************************************************************************   

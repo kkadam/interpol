@@ -2,10 +2,10 @@
 
 ### Evaluate these at each run ###
 # n_core and n_env have to be the same for both the stars #
-scfdir=/work/kkadam/scf_runs/m46
-sim=sims
-out_dir=/work/kkadam/prep_scf
-message="q=0.26 bibi, m49"
+scfdir=/work/kkadam/scf_runs/m63
+sim=sim31
+out_dir=/work/kkadam/fuck/prep_comb2
+message="q=0.5 bibi, m63"
 hydro_dir=/home/kkadam/codes/bipoly_hydro
 walltime=24:00:00
 pin=1.5
@@ -38,24 +38,30 @@ fi
 fn=convertpar.h
 rn=runhydro.h
 
-scfr=${arr[4]}
-scfz=${arr[5]}
-numphi=${arr[6]}
-numr_deltar=$scfr
-omega=${arr[7]}
-kappa1=${arr[9]}
-kappa2=${arr[11]}
-kappac1=${arr[8]}
-kappac2=${arr[10]}
-rho1i=${arr[12]} 
-rho2i=${arr[13]}
-
 np1=${arr[0]}
 np2=${arr[1]}
 
 
+scfr=${arr[4]}
+scfz=${arr[5]}
+numphi=${arr[6]}
+omega=${arr[7]}
+kappac1=${arr[8]}
+kappa1=${arr[9]}
+kappac2=${arr[10]}
+kappa2=${arr[11]}
+rho_c1d=${arr[12]}
+rho_1d=${arr[13]} 
+rho_c2e=${arr[14]}
+rho_2e=${arr[15]}
+pres_d=${arr[16]}
+pres_e=${arr[17]}
+L1=${arr[18]}
+numr_deltar=$scfr
+
+
 ### Write the convertpar.h file ###
-sed -i -e '2,27d' $fn
+sed -i -e '2,32d' $fn
 
 sed -i "2i\       integer, parameter :: scfr = $scfr" $fn
 sed -i "3i\       integer, parameter :: scfz = $scfz" $fn
@@ -69,20 +75,25 @@ sed -i "10i\       double precision, parameter :: kappa1 = $kappa1" $fn
 sed -i "11i\       double precision, parameter :: kappa2 = $kappa2" $fn
 sed -i "12i\       double precision, parameter :: kappac1 = $kappac1" $fn
 sed -i "13i\       double precision, parameter :: kappac2 = $kappac2" $fn
-sed -i "14i\       double precision, parameter :: rho_c1 = $rho1i" $fn
-sed -i "15i\       double precision, parameter :: rho_c2 = $rho2i" $fn
-sed -i "16i\       double precision, parameter :: np1 = $np1" $fn
-sed -i "17i\       double precision, parameter :: np2 = $np2" $fn
-sed -i "18i\ " $fn
-sed -i "19i\       logical, parameter :: bipoly = $bipoly" $fn
-sed -i "20i\       logical, parameter :: binary_system =.true." $fn
-sed -i "21i\ " $fn
-sed -i "22i\!Gridsize of the hydro code (output)" $fn
-sed -i "23i\       integer, parameter :: numr = $numr" $fn
-sed -i "24i\       integer, parameter :: numz = $numz" $fn
-sed -i "25i\ " $fn
-sed -i "26i\       integer, parameter :: numr_procs = $numr_procs" $fn
-sed -i "27i\       integer, parameter :: numz_procs = $numz_procs" $fn
+sed -i "14i\       double precision, parameter :: rho_c1d = $rho_c1d" $fn
+sed -i "15i\       double precision, parameter :: rho_1d = $rho_1d" $fn
+sed -i "16i\       double precision, parameter :: rho_c2e = $rho_c2e" $fn
+sed -i "17i\       double precision, parameter :: rho_2e = $rho_2e" $fn
+sed -i "18i\       double precision, parameter :: pres_d = $pres_d" $fn
+sed -i "19i\       double precision, parameter :: pres_e = $pres_e" $fn
+sed -i "20i\       double precision, parameter :: L1 = $L1" $fn
+sed -i "21i\       double precision, parameter :: np1 = $np1" $fn
+sed -i "22i\       double precision, parameter :: np2 = $np2" $fn
+sed -i "23i\ " $fn
+sed -i "24i\       logical, parameter :: bipoly = $bipoly" $fn
+sed -i "25i\       logical, parameter :: binary_system =.true." $fn
+sed -i "26i\ " $fn
+sed -i "27i\!Gridsize of the hydro code (output)" $fn
+sed -i "28i\       integer, parameter :: numr = $numr" $fn
+sed -i "29i\       integer, parameter :: numz = $numz" $fn
+sed -i "30i\ " $fn
+sed -i "31i\       integer, parameter :: numr_procs = $numr_procs" $fn
+sed -i "32i\       integer, parameter :: numz_procs = $numz_procs" $fn
 
 ### Move the template dir and run the interpol code ###
 #if [ -d template ]; then
@@ -143,6 +154,7 @@ mkdir template/input/conts
 mkdir template/output/data template/output/conts template/output/unscramble
 
 cp $scfdir/density.bin . 
+cp $scfdir/pressure.bin .
 cp $cwd/conv .
 cp $cwd/convertpar.h .
 

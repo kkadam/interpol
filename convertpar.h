@@ -5,14 +5,19 @@
        integer, parameter :: numr_deltar = 130     !Equatorial radius of single star
        integer, parameter :: deltar_parameter = 3.0   !1.5 for single star, 3 for binary
  
-       double precision, parameter :: omega = 9.024581800413496E-002
+       double precision, parameter :: omega = 5.993518241988084E-002
        double precision, parameter :: pin = 1.5
-       double precision, parameter :: kappa1 = 3.372451912042818E-002
-       double precision, parameter :: kappa2 = 2.463955123797566E-002
-       double precision, parameter :: kappac1 = 8.106846554468953E-003
-       double precision, parameter :: kappac2 = 5.773672023224734E-003
-       double precision, parameter :: rho_c1 = 0.222248349191165
-       double precision, parameter :: rho_c2 = 0.205862826412886
+       double precision, parameter :: kappa1 = 1.156969134062987E-002
+       double precision, parameter :: kappa2 = 1.897421743375748E-002
+       double precision, parameter :: kappac1 = 2.577671422755799E-003
+       double precision, parameter :: kappac2 = 4.205512553511600E-003
+       double precision, parameter :: rho_c1d = 0.353889217105572
+       double precision, parameter :: rho_1d = 0.176944608552786
+       double precision, parameter :: rho_c2e = 0.348429694600532
+       double precision, parameter :: rho_2e = 0.174214847300266
+       double precision, parameter :: pres_d = 6.452341278929113E-004
+       double precision, parameter :: pres_e = 1.031111935575959E-003
+       double precision, parameter :: L1 = 0.106299212598425
        double precision, parameter :: np1 = 3.00000000000000
        double precision, parameter :: np2 = 1.50000000000000
  
@@ -27,7 +32,7 @@
        integer, parameter :: numz_procs = 8
        
 
-       integer, parameter :: padr = 2*numr   !Introduced to avoid clipping while interpolating
+       integer, parameter :: padr = 2*scfr   !Introduced to avoid clipping while interpolating
        
 !Various useless parameters
        double precision, parameter :: pi = acos(-1.0)

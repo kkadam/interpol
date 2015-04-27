@@ -2,12 +2,13 @@ subroutine com_final(rho_pad, com)
   implicit none
   include 'convertpar.h'
 
-  double precision :: rho_pad(padr,scfz,numphi)
+  double precision, intent(in) :: rho_pad(padr,scfz,numphi)
+  double precision, intent(out) :: com
+
   double precision, dimension(numphi) :: cosine, phi
   integer :: I, J, K
   double precision, dimension(numr) :: rh
   double precision :: x, dr, dz, dphi, dm, total_mass, numarator
-  double precision, intent(out) :: com
 !*
 !********************************************************************************
 !*
