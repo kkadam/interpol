@@ -2,16 +2,16 @@
 
 ### Evaluate these at each run ###
 # n_core and n_env have to be the same for both the stars #
-scfdir=/work/kkadam/scf_runs/m63
-sim=sim31
-out_dir=/work/kkadam/fuck/prep_comb2
-message="q=0.5 bibi, m63"
+scfdir=/work/kkadam/scf_runs/m66
+sim=sim34
+out_dir=/work/kkadam/prep_scf
+message="q=0.36 bibi, m66"
 hydro_dir=/home/kkadam/codes/bipoly_hydro
-walltime=24:00:00
+walltime=48:00:00
 pin=1.5
 bipoly=.true.
-numr=162
-numz=98
+numr=258
+numz=130
 numr_procs=8
 numz_procs=8
 ppn=8
@@ -175,8 +175,8 @@ cp $scfdir/init template/additional_data
 cp $scfdir/model_details_100000 template/additional_data
 cp $scfdir/autoread.dat template/additional_data
 cp $scfdir/iteration_log template/additional_data
-cp $scfdir/star1 template/additional_data
-cp $scfdir/star2 template/additional_data
+cp $out_dir/star1 template/additional_data
+cp $out_dir/star2 template/additional_data
 cp $out_dir/star1o template/additional_data
 cp $out_dir/star2o template/additional_data
 

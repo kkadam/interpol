@@ -30,8 +30,8 @@ program main
     read(8) rho_temp
   close(8)
 
-  call print2d("rho1i",rho_temp,scfr,scfz,numphi,1)
-  call print2d("rho2i",rho_temp,scfr,scfz,numphi,numphi/2+1)
+  call print2d("star1",rho_temp,scfr,scfz,numphi,1)
+  call print2d("star2",rho_temp,scfr,scfz,numphi,numphi/2+1)
 
 
 !#### Processing and interpolation for binary systems ####
