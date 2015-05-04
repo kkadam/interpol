@@ -11,8 +11,8 @@ program main
   double precision :: rho_combine(padr,scfz,numphi)
   double precision, dimension(numr,numz,numphi) :: density
 
-  integer :: i,j,k,l
-  double precision :: dr, com, com1, com_i
+  integer :: i,j,k,l, maxit, q
+  double precision :: dr, com1, com_i, com_temp
          
 
 !########################### Start Program #########################  
@@ -79,35 +79,42 @@ program main
     call com_initial(rho_temp, com_i)  
     print*, "Initial CoM = ",com_i
 
-   
-!#### Shift the grid to com and interpolate ####
-  
-     call cubic_translation(pres_pad, com_i)  
-!     call cubic_translation(rho_pad, com_i)
 
-     print*,"Cubic interpolation performed"
+!#### Shift the grid to com iteratively ####
+    print*, '============================================================='
+    print*, "Shifting the CoM iteratively..."
 
-!     call com_final(rho_pad, com)  
-!     call com_final(pres_pad, com1)
+    com_temp = com_i
+    maxit = 30
+
+    do q = 1, maxit
+       call cubic_translation(pres_pad, com_temp)  
+       call compute_density(rho_pad,pres_pad,com_i)       
+       call com_final(rho_pad, com_temp)
+
+       print*,"com_temp", com_temp
+       
+       if ( com_temp .lt. 1e-5 ) then
+           exit
+       endif
+ 
+    enddo
+
+    print*,"Cubic interpolation performed"
 
 
-!     print*, "CoM from density= ",com
-!     print*, "CoM from pressure= ",com1  
-
-!  call print2d("rho1c",rho_pad,padr,scfz,numphi,1)
-!  call print2d("rho2c",rho_pad,padr,scfz,numphi,numphi/2+1)
-
-!  call print2d("pres1c",pres_pad,padr,scfz,numphi,1)
-!  call print2d("pres2c",pres_pad,padr,scfz,numphi,numphi/2+1)
-
+!#### Find center of mass of the new system ####
 
      call compute_density(rho_pad,pres_pad,com_i)
      call com_final(rho_pad, com1)
+
      print*, "Final CoM= ",com1   
    else
      print*, "Cubic interpolation NOT performed for the single star"
 
+
 !#### Add padding because initial_conditions takes padded density ####
+
     rho_pad=0.0
     do i=1,scfr
       do j=1,scfz
@@ -118,12 +125,15 @@ program main
     enddo
 
    endif
+
      
 !#### Find center of mass of the new system ####  
 
    print*, "Normalized dr = ", dr!*numr/scfr
+
    
 !#### Call initial condition function ####   
+
   call initial_conditions(rho_pad,density)
   
   call print2d("star1o",density,numr,numz,numphi,1)
