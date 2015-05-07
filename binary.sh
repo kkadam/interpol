@@ -2,23 +2,23 @@
 
 ### Evaluate these at each run ###
 # n_core and n_env have to be the same for both the stars #
-scfdir=/work/kkadam/scf_runs/m66
-sim=sim34
+scfdir=/work/kkadam/scf_runs/m68
+sim=sim40
 out_dir=/work/kkadam/prep_scf
-message="q=0.36 bibi, m66"
+message="q=0.36 bibi, driven 1% for 1, m68, (non driven sim36)"
 hydro_dir=/home/kkadam/codes/bipoly_hydro
 walltime=48:00:00
 pin=1.5
 bipoly=.true.
 numr=258
 numz=130
-numr_procs=8
+numr_procs=16
 numz_procs=8
 ppn=8
 #number of orbits
-dragtime=1.6
-#% of AM removed/orbit
-reallyadrag=0.0
+dragtime=1.0
+#fraction of AM removed/orbit
+reallyadrag=1.0
 
 
 ### Import parameters from the binary SCF ###
@@ -58,6 +58,8 @@ pres_d=${arr[16]}
 pres_e=${arr[17]}
 L1=${arr[18]}
 numr_deltar=$scfr
+com=${arr[19]}
+separator=`echo "scale=10; (-1.0)*$com"|bc`
 
 
 ### Write the convertpar.h file ###
@@ -105,18 +107,19 @@ make cl
 make
 
 ### Make runhydro.h file ###
-sed -i -e '1,10d' $rn
+sed -i -e '1,11d' $rn
 
 sed -i "1i\       integer, parameter :: numr = $numr" $rn
 sed -i "2i\       integer, parameter :: numz = $numz" $rn
 sed -i "3i\       integer, parameter :: numphi = $numphi" $rn
 sed -i "4i\       integer, parameter :: oldnumr = $numr_deltar" $rn
 sed -i "5i\       double precision, parameter :: deltar_parameter = 3.0   !1.5 for single star" $rn
-sed -i "6i\       double precision, parameter :: reallyadrag =  $reallyadrag !% of AM removed/orbit" $rn
+sed -i "6i\       double precision, parameter :: reallyadrag =  $reallyadrag !fraction of AM removed/orbit" $rn
 sed -i "7i\       double precision, parameter :: dragtime = $dragtime !number of orbits" $rn
-sed -i "8i\ " $rn
-sed -i "9i\       integer, parameter :: numr_procs = $numr_procs" $rn
-sed -i "10i\       integer, parameter :: numz_procs = $numz_procs" $rn
+sed -i "8i\       double precision, parameter :: separator = $separator  !-ve of CoM from the SCF" $rn
+sed -i "9i\ " $rn
+sed -i "10i\       integer, parameter :: numr_procs = $numr_procs" $rn
+sed -i "11i\       integer, parameter :: numz_procs = $numz_procs" $rn
 
 
 ### Make firststart.sh and readme files ###
