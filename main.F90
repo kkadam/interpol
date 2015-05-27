@@ -85,7 +85,7 @@ program main
     print*, "Shifting the CoM iteratively..."
 
     com_temp = com_i
-    maxit = 30
+    maxit = 1               ! Ghost structures appear after iterations?
 
     do q = 1, maxit
        call cubic_translation(pres_pad, com_temp)  
