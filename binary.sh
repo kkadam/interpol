@@ -2,23 +2,23 @@
 
 ### Evaluate these at each run ###
 # n_core and n_env have to be the same for both the stars #
-scfdir=/work/kkadam/scf_runs/m68
-sim=sim40
+scfdir=/work/kkadam/scf_runs/m63
+sim=bibi_q0.5_dr
 out_dir=/work/kkadam/prep_scf
-message="q=0.36 bibi, driven 1% for 1, m68, (non driven sim36)"
-hydro_dir=/home/kkadam/codes/bipoly_hydro
-walltime=48:00:00
+message="q=0.5 bibi, driving 1% for 3 orbits (m63)"
+hydro_dir=/home/kkadam/codes/mf_hydro/
+walltime=72:00:00
 pin=1.5
 bipoly=.true.
 numr=258
 numz=130
 numr_procs=16
-numz_procs=8
-ppn=8
+numz_procs=16
+ppn=20
 #number of orbits
-dragtime=1.0
+dragtime=3.0
 #fraction of AM removed/orbit
-reallyadrag=1.0
+reallyadrag=0.01
 
 
 ### Import parameters from the binary SCF ###
@@ -59,7 +59,8 @@ pres_e=${arr[17]}
 L1=${arr[18]}
 numr_deltar=$scfr
 com=${arr[19]}
-separator=`echo "scale=10; (-1.0)*$com"|bc`
+separator=`echo "x=-1.0*$com; if(x<1) print 0; x"| bc`
+#separator=`echo "scale=10; (-1.0)*$com"|bc`
 
 
 ### Write the convertpar.h file ###
@@ -130,7 +131,15 @@ echo $message > readme
 
 ### batchscript and unscramble files ###
 #declare -i nodes
-nodes=`echo "scale=0; (($numr_procs*$numz_procs)/8)"|bc`
+rem=`echo $(( ($numr_procs*$numz_procs)%$ppn ))`
+
+if [ "$rem" -gt "0" ]
+then
+   nodes=`echo $(( $numr_procs*$numz_procs/$ppn+1 ))`
+else 
+   nodes=`echo $(( $numr_procs*$numz_procs/$ppn ))`
+fi
+
 total_procs=`echo "scale=0; ($numr_procs*$numz_procs)"|bc`
 
 sed -i -e '4d;5d;8d;14d' batchscript
