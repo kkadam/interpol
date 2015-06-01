@@ -7,7 +7,7 @@
 
 ### Specify sim number and hydro-dir ###
 sim=1
-hydro_dir=/work/kkadam/bipoly_hydro
+hydro_dir=/home/kkadam/codes/mf_hydro
 
 cwd=$(pwd)
 
@@ -34,19 +34,16 @@ mkdir input/conts
 
 
 ### Get the last timestep from output/conts-dir ###
-contlist=( output$prev/conts/fort.13.* )
-#echo ${contlist[@]}
+declare -a contlist
+contlist=($(ls output0/conts/fort.13* | sort -n -t . -k 3))
+
 declare -i m
 m=${#contlist[@]}-1
 #echo $m
 str=lastfile
 str=lastime
 
-if [ $sim -eq 1 ]; then
-  lastfile=${contlist[$m-1]}
-else
-  lastfile=${contlist[$m]}
-fi
+lastfile=${contlist[$m]}
 lastime=${lastfile:22}
 echo "Last timestep is- $lastime"
 
@@ -62,7 +59,7 @@ cp output$prev/conts/fort.12.$lastime.* input/conts
   sed -i "1i\           1           1" run/fort.7
 
   sed -i -e '2d' run/fort.7
-  sed -i "2i\        $lastime         910001         100" run/fort.7 
+  sed -i "2i\        $lastime         9000000         100" run/fort.7 
 
 
 ### Get the hydro file* ###
@@ -74,11 +71,8 @@ cd $hydro_dir
 make clean
 sf=setup_frac.F90
 
-sed -i -e '283d' $sf
-sed -i "283i\ conts_template = \'input/conts/fort.12.$lastime.\'" $sf
-
-sed -i -e '653d' $sf
-sed -i "653i\ open(unit=9, file=\'input/conts/fort.13.$lastime\', &" $sf
+sed -i "/conts_template = /c\ conts_template = \'input/conts/fort.12.$lastime.'" $sf
+sed -i "/open(unit=9/c\ open(unit=9, file=\'input/conts/fort.13.$lastime', &" $sf
 
 make 
 cd $cwd
