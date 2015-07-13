@@ -2,24 +2,24 @@
 
 ### Evaluate these at each run ###
 # n_core and n_env have to be the same for both the stars #
-scfdir=/work/kkadam/scf_runs/m63
-sim=bibi_q0.5_dr
-out_dir=/work/kkadam/prep_scf
-message="q=0.5 bibi, driving 1% for 3 orbits (m63)"
+scfdir=/work/kkadam/brave_new_bi-bipoly_manual
+sim=simtest
+out_dir=/work/kkadam/scf_runs
+message="q=1 bibi, rochelobes almost filling, 97%"
 hydro_dir=/home/kkadam/codes/mf_hydro/
-walltime=72:00:00
+walltime=24:00:00
 pin=1.5
 bipoly=.true.
-numr=258
-numz=130
+numr=130
+numz=98
 numr_procs=16
 numz_procs=16
 ppn=20
 #number of orbits
 dragtime=3.0
 #fraction of AM removed/orbit
-reallyadrag=0.01
-
+reallyadrag=0.00
+num_species=5
 
 ### Import parameters from the binary SCF ###
 if [ -f $scfdir/autoread.dat ] && [ -f $scfdir/density.bin ]; then
@@ -59,7 +59,8 @@ pres_e=${arr[17]}
 L1=${arr[18]}
 numr_deltar=$scfr
 com=${arr[19]}
-separator=`echo "x=-1.0*$com; if(x<1) print 0; x"| bc`
+separator=$(echo "-1 $com" | awk '{printf "%f", $1 * $2}')
+#separator=`echo "x=-1.0*$com; if(x<1) print 0; x"| bc`
 #separator=`echo "scale=10; (-1.0)*$com"|bc`
 
 
@@ -108,7 +109,7 @@ make cl
 make
 
 ### Make runhydro.h file ###
-sed -i -e '1,11d' $rn
+sed -i -e '1,13d' $rn
 
 sed -i "1i\       integer, parameter :: numr = $numr" $rn
 sed -i "2i\       integer, parameter :: numz = $numz" $rn
@@ -119,8 +120,10 @@ sed -i "6i\       double precision, parameter :: reallyadrag =  $reallyadrag !fr
 sed -i "7i\       double precision, parameter :: dragtime = $dragtime !number of orbits" $rn
 sed -i "8i\       double precision, parameter :: separator = $separator  !-ve of CoM from the SCF" $rn
 sed -i "9i\ " $rn
-sed -i "10i\       integer, parameter :: numr_procs = $numr_procs" $rn
-sed -i "11i\       integer, parameter :: numz_procs = $numz_procs" $rn
+sed -i "10i\       integer, parameter :: num_species = $num_species" $rn
+sed -i "11i\ " $rn
+sed -i "12i\       integer, parameter :: numr_procs = $numr_procs" $rn
+sed -i "13i\       integer, parameter :: numz_procs = $numz_procs" $rn
 
 
 ### Make firststart.sh and readme files ###
