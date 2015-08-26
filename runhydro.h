@@ -1,13 +1,16 @@
-       integer, parameter :: numr = 514
-       integer, parameter :: numz = 258
-       integer, parameter :: numphi = 512
-       integer, parameter :: oldnumr = 258
+       integer, parameter :: numr = 258
+       integer, parameter :: numz = 130
+       integer, parameter :: numphi = 256
+       integer, parameter :: oldnumr = 130
        double precision, parameter :: deltar_parameter = 3.0   !1.5 for single star
-       double precision, parameter :: reallyadrag =  0.0 !% of AM removed/orbit
-       double precision, parameter :: dragtime = 1.6 !number of orbits
+       double precision, parameter :: reallyadrag =  0.00 !fraction of AM removed/orbit
+       double precision, parameter :: dragtime = 3.0 !number of orbits
+       double precision, parameter :: separator = 0.134676  !-ve of CoM from the SCF
+ 
+       integer, parameter :: num_species = 5
  
        integer, parameter :: numr_procs = 16
-       integer, parameter :: numz_procs = 8
+       integer, parameter :: numz_procs = 16
 
        integer, parameter :: numr_dd = ( (numr - 2)/numr_procs ) + 2
 
@@ -28,6 +31,7 @@
        integer, parameter :: numphi_by_four = numphi / 4
 
        real, parameter :: numphiinv = 1.0 / numphi
+
 
 ! restrictions on the above parameters:
 !

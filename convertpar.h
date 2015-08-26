@@ -25,11 +25,11 @@
        logical, parameter :: binary_system =.true.
  
 !Gridsize of the hydro code (output)
-       integer, parameter :: numr = 162
-       integer, parameter :: numz = 98
+       integer, parameter :: numr = 258
+       integer, parameter :: numz = 130
  
-       integer, parameter :: numr_procs = 8
-       integer, parameter :: numz_procs = 8
+       integer, parameter :: numr_procs = 16
+       integer, parameter :: numz_procs = 16
        
 
        integer, parameter :: padr = 2*scfr   !Introduced to avoid clipping while interpolating

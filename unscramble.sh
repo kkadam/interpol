@@ -5,7 +5,7 @@
 
 
 ### Specify the unscramble.F90 location  ###
-unsc_dir=/work/kkadam/binary_hydro_sim
+unsc_dir=/work/kkadam/mf_hydro_sim
 str=unscfile
 unscfile=unscramble_p2.F90
 

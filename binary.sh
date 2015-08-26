@@ -2,16 +2,16 @@
 
 ### Evaluate these at each run ###
 # n_core and n_env have to be the same for both the stars #
-scfdir=/work/kkadam/brave_new_bi-bipoly_manual
-sim=simtest
-out_dir=/work/kkadam/scf_runs
-message="q=1 bibi, rochelobes almost filling, 97%"
+scfdir=/work/kkadam/scf_runs/m63
+sim=test_mf2
+out_dir=/work/kkadam/mf_hydro_sim
+message="q=0.5 tested, m63" 
 hydro_dir=/home/kkadam/codes/mf_hydro/
-walltime=24:00:00
+walltime=02:00:00
 pin=1.5
 bipoly=.true.
-numr=130
-numz=98
+numr=258
+numz=130
 numr_procs=16
 numz_procs=16
 ppn=20
