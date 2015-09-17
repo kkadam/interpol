@@ -7,7 +7,8 @@ subroutine fort(com_i)
   integer :: isym, model_type, tstart, tstop, do_diag, isoadi, call_pot, &
              zero_out, bc1, bc2, bc3
   double precision :: vmax, constp, densmin, taumin, rho_boundary, q,    &
-                      viscosity, gammac, gammae, rho_th1, rho_th2
+                      viscosity, gammac1, gammae1, gammac2, gammae2,     &
+                      rho_th1, rho_th2
   double precision :: tauarray(4)
 
 
@@ -16,13 +17,15 @@ subroutine fort(com_i)
   rho_th1=(rho_c1d+rho_1d)/2
   rho_th2=(rho_c2e+rho_2e)/2
 
-  gammac = 1.0+1/np1
-  gammae = 1.0+1/np2
+  gammac1 = 1.0+1/nc1
+  gammae1 = 1.0+1/ne1
+  gammac2 = 1.0+1/nc2
+  gammae2 = 1.0+1/ne1
 
-  tauarray(1) = (kappa1/(gammae-1))**(1/gammae)*densmin
-  tauarray(2) = (kappa2/(gammae-1))**(1/gammae)*densmin
-  tauarray(3) = (kappac1/(gammac-1))**(1/gammac)*densmin
-  tauarray(4) = (kappac2/(gammac-1))**(1/gammac)*densmin
+  tauarray(1) = (kappae1/(gammae1-1))**(1/gammae1)*densmin
+  tauarray(2) = (kappae2/(gammae2-1))**(1/gammae2)*densmin
+  tauarray(3) = (kappac1/(gammac1-1))**(1/gammac1)*densmin
+  tauarray(4) = (kappac2/(gammac2-1))**(1/gammac2)*densmin
 
   taumin = minval(tauarray)
 
@@ -42,15 +45,15 @@ subroutine fort(com_i)
   zero_out = 0
   WRITE(10,*) isoadi, call_pot, zero_out                   !3 
   
-  WRITE(10,*) pin, gamma                                   !4
+  WRITE(10,*) nc1, ne1                                     !8
 
-  WRITE(10,*) kappa1, kappa2                               !5
+  WRITE(10,*) nc2, ne2                                     !8
 
-  WRITE(10,*) kappac1, kappac2                             !6
+  WRITE(10,*) kappac1, kappae1                               !5
+
+  WRITE(10,*) kappac2, kappae2                             !6
 
   WRITE(10,*) rho_th1, rho_th2                             !7
-  
-  WRITE(10,*) np1, np2                                     !8
   
   if (omega.lt.1d-2) then
     WRITE(10,*) omega, 120, 0.4                            !9
@@ -82,7 +85,6 @@ subroutine fort(com_i)
   
 end subroutine fort  
 
-
 !*
 !*********************************************************************************
 !*
@@ -103,23 +105,28 @@ end subroutine fort
 !                       1 => solve for          inner zero_out zones in j 
 !                       self-gravity            for all k and l
 !                       potential of fluid
-!  pin                  gamma            
-!  polytropic           polytropic      
-!  index                exponent        
+!
+!  n(1)                         n(2) 
+!  Structural polytropic        Structural polytropic
+!  index of the core of         index of envelope of
+!  star1                        star1
+!
+!
+!  n(3)                         n(4) 
+!  Structural polytropic        Structural polytropic
+!  indx of the core of          indx of the envelope of
+!  star2                        star2
 !                                                            
 !
-! kappa1                        kappa2                        !bipoly 
+! kappa(1)                      kappa(2)                        !bipoly 
 ! polytropic constant for       polytropic constant for 
-! 0 <= phi < pi/2               pi/2 <= phi < 3 pi/2
-! 3 pi/2 <= phi < 0       
+! core, star1                   envelope, star1
+!        
 !
+! kappa(3)                      kappa(4)                        !bipoly 
+! polytropic constant for       polytropic constant for 
+! core, star2                   envelope, star2
 !                               
-! kappac1                       kappac2 
-! polytropic constant for       polytropic constant for 
-! the core                      the core
-! 0 <= phi < pi/2               pi/2 <= phi < 3 pi/2
-! 3 pi/2 <= phi < 0     
-!
 !
 ! rho_c1                        rho_c2
 ! threshold density above       threshold density above
@@ -128,11 +135,6 @@ end subroutine fort
 ! star1                         star2
 !
 !
-!  np1                          np2 
-!  Structural polytropic        Structural polytropic
-!  indx of both the core        indx of both the envelopes
-!
-!               
 !  omgfrm               intrvl                  scfomega
 !  angular frequency    number of frames to     angular frequency of
 !  of rotating frame    output per orbit        initial model
@@ -149,8 +151,6 @@ end subroutine fort
 !  densmin                      taumin
 !  floor value for density      floor value for tau = (rho eps)**1/gamma
 !  shouldn't change the values of taumin and densmin during a run
-!
-!
 !
 !  boundary_condition(1)        boundary_consition(2)   boundary_condition(3)
 !  bottom of grid               side of grid            top of grid
@@ -170,13 +170,9 @@ end subroutine fort
 !                               on the grid.  0 <= q <= 1
 !
 !
-!  viscosity (On same line as rho_boundary and q)
+!  viscosity
 !  isotropic coeeficient of the 
 !  artificial viscosity
 !
-!  com
-!  Center of mass is used for defining
-!  separating boundary between the two stars
-!
 !*
-!*********************************************************************************   
+!*********************************************************************************      

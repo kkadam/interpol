@@ -43,10 +43,10 @@ subroutine compute_density(rho_pad,pres_pad,com)
   enddo
 
 ! Calculate gammas
-  gammae1 = 1.0 + 1.0/np2
-  gammae2 = 1.0 + 1.0/np2
-  gammac1 = 1.0 + 1.0/np1
-  gammac2 = 1.0 + 1.0/np1
+  gammac1 = 1.0+1/nc1
+  gammae1 = 1.0+1/ne1
+  gammac2 = 1.0+1/nc2
+  gammae2 = 1.0+1/ne1
 
 !  do i=1, padr
 !    print*, xhf(i,1), i
@@ -63,7 +63,7 @@ subroutine compute_density(rho_pad,pres_pad,com)
                    if ( pres_pad(j,k,l) .ge. pres_d ) then
                       rho_pad(j,k,l) = ( pres_pad(j,k,l)/kappac1 )**(1.0/gammac1)
                    else
-                      rho_pad(j,k,l) = ( pres_pad(j,k,l)/kappa1 )**(1.0/gammae1)
+                      rho_pad(j,k,l) = ( pres_pad(j,k,l)/kappae1 )**(1.0/gammae1)
                    endif
 
                 else
@@ -71,7 +71,7 @@ subroutine compute_density(rho_pad,pres_pad,com)
                    if ( pres_pad(j,k,l) .ge. pres_e ) then
                       rho_pad(j,k,l) = ( pres_pad(j,k,l)/kappac2 )**(1.0/gammac2)
                    else
-                      rho_pad(j,k,l) = ( pres_pad(j,k,l)/kappa2 )**(1.0/gammae2)
+                      rho_pad(j,k,l) = ( pres_pad(j,k,l)/kappae2 )**(1.0/gammae2)
                    endif
 
                 endif

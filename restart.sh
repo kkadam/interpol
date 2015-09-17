@@ -35,7 +35,7 @@ mkdir input/conts
 
 ### Get the last timestep from output/conts-dir ###
 declare -a contlist
-contlist=($(ls output0/conts/fort.13* | sort -n -t . -k 3))
+contlist=($(ls output$prev/conts/fort.13* | sort -n -t . -k 3))
 
 declare -i m
 m=${#contlist[@]}-1

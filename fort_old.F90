@@ -6,15 +6,15 @@ subroutine fort_old
              zero_out, bc1, bc2, bc3
   double precision :: vmax, constp, densmin, taumin, rho_boundary, q, viscosity
   double precision :: tauarray(2)
-  character*20 char_kappa1, char_kappa2
+  character*20 char_kappae1, char_kappae2
 
   densmin = 1.0e-10
   
-  write (char_kappa1, "(F9.6)") kappa1
-  write (char_kappa2, "(F9.6)") kappa2
+  write (char_kappae1, "(F9.6)") kappae1
+  write (char_kappae2, "(F9.6)") kappae2
 
-  tauarray(1) = (kappa1/(gamma-1))**(1/gamma)*densmin
-  tauarray(2) = (kappa2/(gamma-1))**(1/gamma)*densmin
+  tauarray(1) = (kappae1/(gamma-1))**(1/gamma)*densmin
+  tauarray(2) = (kappae2/(gamma-1))**(1/gamma)*densmin
 
   taumin = minval(tauarray)    
 
@@ -34,7 +34,7 @@ subroutine fort_old
   zero_out = 0
   WRITE(10,*) isoadi, call_pot, zero_out                   !3 
   
-  WRITE(10,*) pin, gamma, trim(char_kappa1),"     ", trim(char_kappa2)        !4
+  WRITE(10,*) pin, gamma, trim(char_kappae1),"     ", trim(char_kappae2)        !4
 
   if (omega.lt.1d-2) then
     WRITE(10,*) omega, 120, 0.4                            !5
