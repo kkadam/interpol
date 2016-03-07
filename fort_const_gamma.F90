@@ -1,4 +1,4 @@
-subroutine fort(com_i)
+subroutine fort_const_gamma(com_i)
   implicit none
   include "convertpar.h"
 
@@ -14,8 +14,8 @@ subroutine fort(com_i)
 
   densmin = 1.0e-10 
 
-  rho_th1=rho_1d
-  rho_th2=rho_2e
+  rho_th1=(rho_c1d+rho_1d)/2
+  rho_th2=(rho_c2e+rho_2e)/2
 
   gammac1 = 1.0+1/nc1
   gammae1 = 1.0+1/ne1
@@ -45,15 +45,15 @@ subroutine fort(com_i)
   zero_out = 0
   WRITE(10,*) isoadi, call_pot, zero_out                   !3 
   
-  WRITE(10,*) nc1, ne1                                     !8
+  WRITE(10,*) pin, gamma                                     !8
 
-  WRITE(10,*) nc2, ne2                                     !8
+  WRITE(10,*) kappae1, kappae2                               !5
 
-  WRITE(10,*) kappac1, kappae1                               !5
-
-  WRITE(10,*) kappac2, kappae2                             !6
+  WRITE(10,*) kappac1, kappac2                             !6
 
   WRITE(10,*) rho_th1, rho_th2                             !7
+
+  WRITE(10,*) nc1, ne1                             !7
   
   if (omega.lt.1d-2) then
     WRITE(10,*) omega, 120, 0.4                            !9
@@ -83,7 +83,7 @@ subroutine fort(com_i)
   CLOSE(10)
   write(*,*) "File fort.7 printed"	  
   
-end subroutine fort  
+end subroutine fort_const_gamma
 
 !*
 !*********************************************************************************

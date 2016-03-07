@@ -5,7 +5,7 @@
 #FC=/usr/local/compilers/Intel/intel_fc_11.1/bin/intel64/ifort  #e
 
 F90FILES= main.F90 initial_conditions.F90 com_initial.F90 fort.F90 fort_old.F90 \
-          cubic.F90 com_final.F90 print2d.F90 compute_density.F90
+          cubic.F90 com_final.F90 print2d.F90 compute_density.F90 fort_const_gamma.F90
 
 OFILES= $(F90FILES:.F90=.o) 
 

@@ -1,11 +1,11 @@
 #!/bin/bash
 #PBS -q workq
-#PBS -A loni_lrn01 
+#PBS -A loni_lrn02
 #PBS -l nodes=13:ppn=20
-#PBS -l walltime=02:00:00
+#PBS -l walltime=72:00:00
 #PBS -o pbs_out
 #PBS -j oe
-#PBS -N test_mf2
+#PBS -N q0.7LR
 
 # mpi jobs would execute:
 

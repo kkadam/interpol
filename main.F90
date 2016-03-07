@@ -88,8 +88,8 @@ program main
     maxit = 1               ! Ghost structures appear after iterations?
 
     do q = 1, maxit
-       call cubic_translation(pres_pad, com_temp)  
-       call compute_density(rho_pad,pres_pad,com_i)       
+       call cubic_translation(pres_pad, com_temp)   !!!
+       call compute_density(rho_pad,pres_pad,com_i)  !!!     
        call com_final(rho_pad, com_temp)
 
        print*,"com_temp", com_temp
@@ -105,7 +105,7 @@ program main
 
 !#### Find center of mass of the new system ####
 
-     call compute_density(rho_pad,pres_pad,com_i)
+!     call compute_density(rho_pad,pres_pad,com_i)
      call com_final(rho_pad, com1)
 
      print*, "Final CoM= ",com1   
@@ -142,7 +142,11 @@ program main
 
 !#### Print fort.7 file ####   
   if (bipoly) then
-     call fort(com_i)
+     if (const_gamma) then
+        call fort_const_gamma(com_i)
+     else
+        call fort(com_i)
+     endif
   else
      call fort_old
   endif   

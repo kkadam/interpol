@@ -2,26 +2,27 @@
 
 ### Evaluate these at each run ###
 # n_core and n_env have to be the same for both the stars #
-scfdir=/work/kkadam/scf_runs/m105
+scfdir=/work/kkadam/brave_new_threshold
 #scfdir=/work/kkadam/brave_new_bi-bipoly
-sim=sim11
+sim=q0.7LR
 out_dir=/work/kkadam/mf_hydro_sim
 #out_dir=/work/kkadam/lonely_runs
-message="q=0.15 with rlff=0.87 for low mass star1, high res" 
+message="q=0.7 low res run"
 hydro_dir=/home/kkadam/codes/mf_constant_gamma/
 walltime=72:00:00
 pin=1.5
 bipoly=.true.
-numr=514
-numz=258
-numr_procs=32
+numr=258
+numz=130
+numr_procs=16
 numz_procs=16
 ppn=20
 #number of orbits
-dragtime=3.0
+dragtime=0.0
 #fraction of AM removed/orbit
 reallyadrag=0.01
 num_species=5
+
 
 ### Import parameters from the binary SCF ###
 if [ -f $scfdir/autoread.dat ] && [ -f $scfdir/density.bin ]; then
@@ -67,7 +68,7 @@ separator=$(echo "-1 $com" | awk '{printf "%f", $1 * $2}')
 
 
 ### Write the convertpar.h file ###
-sed -i -e '2,34d' $fn
+sed -i -e '2,36d' $fn
 
 sed -i "2i\       integer, parameter :: scfr = $scfr" $fn
 sed -i "3i\       integer, parameter :: scfz = $scfz" $fn
@@ -102,6 +103,10 @@ sed -i "31i\       integer, parameter :: numz = $numz" $fn
 sed -i "32i\ " $fn
 sed -i "33i\       integer, parameter :: numr_procs = $numr_procs" $fn
 sed -i "34i\       integer, parameter :: numz_procs = $numz_procs" $fn
+sed -i "35i\ " $fn
+sed -i "36i\       logical, parameter :: const_gamma = .true. " $fn
+
+
 
 ### Move the template dir and run the interpol code ###
 #if [ -d template ]; then
@@ -192,6 +197,7 @@ sed -i "2i\ $scfdir" template/additional_data/readme_scf
 cp $scfdir/runscf.h template/additional_data
 cp $scfdir/init template/additional_data
 cp $scfdir/model_details_100000 template/additional_data
+cp $scfdir/convergence_log template/additional_data
 cp $scfdir/autoread.dat template/additional_data
 cp $scfdir/iteration_log template/additional_data
 cp $out_dir/star1 template/additional_data

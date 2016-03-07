@@ -12,6 +12,8 @@ subroutine compute_density(rho_pad,pres_pad,com)
   double precision :: gammae1, gammae2, gammac1, gammac2
   double precision :: x, dr, dphi
   integer :: i, l, j, k
+  double precision :: rhoc(padr,scfz,numphi), rhoe(padr,scfz,numphi)
+
   
 ! L1 is separation point which separates the two stars
 ! and specify pressure by hand
@@ -54,26 +56,35 @@ subroutine compute_density(rho_pad,pres_pad,com)
 
   rho_pad = 0.0
 
+
 ! Calculate density array
        do l = 1, numphi
           do k = 1, scfz
              do j = 2, padr
                 if ( xhf(j,l) .gt. (com*(-1.0)) ) then
-!rho_test(j,k,l)= 0.1
-                   if ( pres_pad(j,k,l) .ge. pres_d ) then
-                      rho_pad(j,k,l) = ( pres_pad(j,k,l)/kappac1 )**(1.0/gammac1)
-                   else
-                      rho_pad(j,k,l) = ( pres_pad(j,k,l)/kappae1 )**(1.0/gammae1)
-                   endif
-
+                    rhoc(j,k,l) = ( pres_pad(j,k,l)/kappac1 )**(1.0/gammac1)
+                    rhoe(j,k,l) = ( pres_pad(j,k,l)/kappae1 )**(1.0/gammae1)
                 else
-!rho_test(j,k,l)= 0.2
-                   if ( pres_pad(j,k,l) .ge. pres_e ) then
-                      rho_pad(j,k,l) = ( pres_pad(j,k,l)/kappac2 )**(1.0/gammac2)
-                   else
-                      rho_pad(j,k,l) = ( pres_pad(j,k,l)/kappae2 )**(1.0/gammae2)
-                   endif
+                    rhoc(j,k,l) = ( pres_pad(j,k,l)/kappac2 )**(1.0/gammac2)
+                    rhoe(j,k,l) = ( pres_pad(j,k,l)/kappae2 )**(1.0/gammae2)
+                endif
+             enddo
+          enddo
+       enddo
 
+       rho_pad = rhoe
+
+       do l = 1, numphi
+          do k = 1, scfz
+             do j = 2, padr
+                if ( xhf(j,l) .gt. (com*(-1.0)) ) then
+                   if ( rho_pad(j,k,l) .gt. rho_1d ) then
+                      rho_pad(j,k,l) = rhoc(j,k,l)
+                   endif
+                else
+                   if ( rho_pad(j,k,l) .gt. rho_2e ) then
+                      rho_pad(j,k,l) = rhoc(j,k,l)
+                   endif
                 endif
              enddo
           enddo
