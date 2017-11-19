@@ -23,6 +23,7 @@ dragtime=0.0
 reallyadrag=0.01
 num_species=5
 
+
 ### Import parameters from the binary SCF ###
 if [ -f $scfdir/autoread.dat ] && [ -f $scfdir/density.bin ]; then
    datastr=`cat $scfdir/autoread.dat`
@@ -67,7 +68,7 @@ separator=$(echo "-1 $com" | awk '{printf "%f", $1 * $2}')
 
 
 ### Write the convertpar.h file ###
-sed -i -e '2,34d' $fn
+sed -i -e '2,36d' $fn
 
 sed -i "2i\       integer, parameter :: scfr = $scfr" $fn
 sed -i "3i\       integer, parameter :: scfz = $scfz" $fn
@@ -102,6 +103,10 @@ sed -i "31i\       integer, parameter :: numz = $numz" $fn
 sed -i "32i\ " $fn
 sed -i "33i\       integer, parameter :: numr_procs = $numr_procs" $fn
 sed -i "34i\       integer, parameter :: numz_procs = $numz_procs" $fn
+sed -i "35i\ " $fn
+sed -i "36i\       logical, parameter :: const_gamma = .true. " $fn
+
+
 
 ### Move the template dir and run the interpol code ###
 #if [ -d template ]; then

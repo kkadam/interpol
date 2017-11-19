@@ -32,10 +32,12 @@
  
        integer, parameter :: numr_procs = 16
        integer, parameter :: numz_procs = 16
-       
+ 
+       logical, parameter :: const_gamma = .true. 
 
        integer, parameter :: padr = 2*scfr   !Introduced to avoid clipping while interpolating
-       
+
+
 !Various useless parameters
        double precision, parameter :: pi = acos(-1.0)
        

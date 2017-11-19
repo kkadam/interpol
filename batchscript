@@ -1,8 +1,11 @@
 #!/bin/bash
+
+### for queenbee ###
+
 #PBS -q workq
 #PBS -A loni_lrn05
 #PBS -l nodes=13:ppn=20
-#PBS -l walltime=02:00:00
+#PBS -l walltime=72:00:00
 #PBS -o pbs_out
 #PBS -j oe
 #PBS -N run3
@@ -12,4 +15,3 @@
 cd $PBS_O_WORKDIR
 
 /usr/local/compilers/Intel/parallel_studio_xe_2015/impi/5.0.1.035/intel64/bin/mpirun -np 256 -hostfile $PBS_NODEFILE <location_of_hydro_exec>
-
