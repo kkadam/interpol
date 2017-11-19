@@ -1,6 +1,6 @@
 #!/bin/bash
 cwd=$(pwd)
-hydro_dir=/home/kkadam/codes/mf_hydro/  
+hydro_dir=/work/kkadam/paper2/mf_constant_gamma-bu/  
 
 
 cp additional_data/runhydro.h $hydro_dir

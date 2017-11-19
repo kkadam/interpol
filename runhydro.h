@@ -3,9 +3,9 @@
        integer, parameter :: numphi = 256
        integer, parameter :: oldnumr = 130
        double precision, parameter :: deltar_parameter = 3.0   !1.5 for single star
-       double precision, parameter :: reallyadrag =  0.00 !fraction of AM removed/orbit
-       double precision, parameter :: dragtime = 3.0 !number of orbits
-       double precision, parameter :: separator = 0.134676  !-ve of CoM from the SCF
+       double precision, parameter :: reallyadrag =  0.015 !fraction of AM removed/orbit
+       double precision, parameter :: dragtime = 4.0 !number of orbits
+       double precision, parameter :: separator = -0.143847  !-ve of CoM from the SCF
  
        integer, parameter :: num_species = 5
  

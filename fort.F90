@@ -45,15 +45,15 @@ subroutine fort(com_i)
   zero_out = 0
   WRITE(10,*) isoadi, call_pot, zero_out                   !3 
   
-  WRITE(10,*) nc1, ne1                                     !8
+  WRITE(10,*) pin, 1+1.0/pin                               !4
 
-  WRITE(10,*) nc2, ne2                                     !8
+  WRITE(10,*) kappae1, kappae2                               !5
 
-  WRITE(10,*) kappac1, kappae1                               !5
-
-  WRITE(10,*) kappac2, kappae2                             !6
+  WRITE(10,*) kappac1, kappac2                             !6
 
   WRITE(10,*) rho_th1, rho_th2                             !7
+
+  WRITE(10,*) nc1, ne1                             !8
   
   if (omega.lt.1d-2) then
     WRITE(10,*) omega, 120, 0.4                            !9
@@ -73,7 +73,7 @@ subroutine fort(com_i)
   WRITE(10,*) bc1, bc2, bc3                                !12
   
   rho_boundary = 1.0e-5 
-  q = 0.1000000000
+  q = 0.0000000001
   viscosity = 2.0
   WRITE(10,*) rho_boundary, q, viscosity                   !13 
 

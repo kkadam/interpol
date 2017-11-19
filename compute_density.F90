@@ -60,7 +60,7 @@ subroutine compute_density(rho_pad,pres_pad,com)
              do j = 2, padr
                 if ( xhf(j,l) .gt. (com*(-1.0)) ) then
 !rho_test(j,k,l)= 0.1
-                   if ( pres_pad(j,k,l) .ge. pres_d ) then
+                   if ( pres_pad(j,k,l) .gt. pres_d ) then
                       rho_pad(j,k,l) = ( pres_pad(j,k,l)/kappac1 )**(1.0/gammac1)
                    else
                       rho_pad(j,k,l) = ( pres_pad(j,k,l)/kappae1 )**(1.0/gammae1)
@@ -68,7 +68,7 @@ subroutine compute_density(rho_pad,pres_pad,com)
 
                 else
 !rho_test(j,k,l)= 0.2
-                   if ( pres_pad(j,k,l) .ge. pres_e ) then
+                   if ( pres_pad(j,k,l) .gt. pres_e ) then
                       rho_pad(j,k,l) = ( pres_pad(j,k,l)/kappac2 )**(1.0/gammac2)
                    else
                       rho_pad(j,k,l) = ( pres_pad(j,k,l)/kappae2 )**(1.0/gammae2)

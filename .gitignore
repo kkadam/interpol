@@ -6,6 +6,7 @@ batchscript
 runhydro.h
 convertpar.h
 density.bin
+pressure.bin
 
 # Output and temp files
 readme
